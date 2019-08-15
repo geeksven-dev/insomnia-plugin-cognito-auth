@@ -1,0 +1,14 @@
+{
+  "name": "insomna-plugin-cognito-auth",
+  "version": "0.1.0",
+  "main": "main.js",
+  "insomnia": {
+    "name": "cognito-auth",
+    "description": "cognito auth plugin"
+  },
+  "dependencies": {
+    "aws-amplify": "^1.1.19",
+    "lodash": "^4.17.15",
+    "jwt-decode": "^2.2.0"
+  }
+}
