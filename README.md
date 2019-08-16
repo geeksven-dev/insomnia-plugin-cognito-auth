@@ -9,7 +9,8 @@ Create an environment in Insomnia and add the following params:
 "username": "<username>",
 "password": "<password>",
 "userPoolId": "<user_pool_id>",
-"clientId": "<client_id>"
+"clientId": "<client_id>",
+"host": "<host>"
 ```
 ### How it works
 On each request the plugin will intercept the execution and lookup for existing `accessToken` and `identityToken`in the 

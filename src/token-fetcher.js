@@ -17,15 +17,17 @@ module.exports = async function (context) {
     return !(typeof data.nbf !== 'undefined' && data.nbf > now);
   };
 
+  const host = context.request.getEnvironmentVariable('host');
   const username = context.request.getEnvironmentVariable('username');
   const password = context.request.getEnvironmentVariable('password');
   const userPoolId = context.request.getEnvironmentVariable('userPoolId');
   const clientId = context.request.getEnvironmentVariable('clientId');
 
+  const existingHost = await context.store.getItem("host");
   const existingAccessToken = await context.store.getItem("accessToken");
   const existingIdToken = await context.store.getItem("idToken");
 
-  if(!validToken(existingAccessToken)) {
+  if((existingHost == null && host != null) || existingHost !== host || !validToken(existingAccessToken)) {
     const cognitoUserConfig = {
       username: username,
       password: password,
@@ -46,7 +48,7 @@ module.exports = async function (context) {
       const accessToken = user.signInUserSession.accessToken.jwtToken;
       const idToken = user.signInUserSession.idToken.jwtToken;
       context.store.setItem("accessToken", accessToken);
-      context.store.setItem("idToken", accessToken);
+      context.store.setItem("idToken", idToken);
       return  {
         accessToken : accessToken,
         idToken : idToken
@@ -60,4 +62,5 @@ module.exports = async function (context) {
     context.request.setHeader('Authorization', `Bearer ${existingAccessToken}`);
     context.request.setHeader('Identity', `${existingIdToken}`);
   }
+  context.store.setItem("host", host);
 };
