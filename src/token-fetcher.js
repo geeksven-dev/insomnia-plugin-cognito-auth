@@ -3,6 +3,12 @@ const jwtDecode = require('jwt-decode');
 const { Auth } = Amplify;
 
 module.exports = async function (context) {
+  const interceptAuth = context.request.getEnvironmentVariable('intercept_auth');
+  if(interceptAuth === false) {
+    console.log("not intercepting auth");
+    return;
+  }
+
   const validToken = token => {
     if(typeof token == 'undefined' || token == null) {
       return false;
